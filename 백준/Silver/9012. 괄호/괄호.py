@@ -1,14 +1,14 @@
 N = int(input())
 
-for i in range(N):
+for _ in range(N):
     arr = input()
     stack = []
     is_vps = True
 
-    for char in arr:
-        if char == '(':
-            stack.append(char)
-        elif char == ')':
+    for str in arr:
+        if str == '(':
+            stack.append(str)
+        elif str == ')':
             if stack:
                 stack.pop()
             else:
@@ -16,6 +16,6 @@ for i in range(N):
                 break
 
     if is_vps and not stack:
-        print('YES')
+        print("YES")
     else:
-        print('NO')
+        print("NO")
