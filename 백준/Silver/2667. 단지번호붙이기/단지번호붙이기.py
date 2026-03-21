@@ -1,48 +1,37 @@
-from collections import deque
+n = int(input())
 
-# 상하좌우
-dx = [-1, 1, 0, 0] 
-dy = [0, 0, -1, 1]
+arr = []
 
+for i in range(n):
+    arr.append(list(map(int, input().strip())))
 
-def bfs(graph,a,b):
-    n = len(graph)
-    queue = deque()
-    queue.append((a,b))
-    graph[a][b]=0
-    count=1
+visited = [[False] * n for _ in range(n)]
+apart = []
 
-    while queue:
-        x, y = queue.popleft()
+def dfs(x,y, visited):
+    dx = [-1,1,0,0]
+    dy = [0,0,-1,1]
+    visited[x][y] = True
+    count = 1
 
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
+    for i in range(4):
+        nx = x + dx[i]
+        ny = y + dy[i]
 
-            if nx<0 or nx>=n or ny<0 or ny>=n:
-                continue
-            if graph[nx][ny]==1:
-                graph[nx][ny]=0
-                queue.append((nx,ny))
-                count+=1
+        if 0<=nx<n and 0<=ny<n:
+            if not visited[nx][ny] and arr[nx][ny] == 1:
+                visited[nx][ny] = True
+                count += dfs(nx,ny,visited)
+
     return count
 
-
-n = int(input())
-graph = []
-
-for _ in range(n):
-    graph.append(list(map(int, input()))) 
-
-cnt = []
 for i in range(n):
     for j in range(n):
-        if graph[i][j]==1:
-            cnt.append(bfs(graph,i,j))
+        if arr[i][j] == 1 and not visited[i][j]:
+            house_count = dfs(i,j,visited)
+            apart.append(house_count)
 
-cnt.sort()
+print(len(apart))
+for count in sorted(apart):
+    print(count)
 
-print(len(cnt))
-
-for i in range(len(cnt)):
-    print(cnt[i])
