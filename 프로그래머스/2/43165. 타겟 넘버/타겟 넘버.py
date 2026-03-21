@@ -1,18 +1,22 @@
 from collections import deque
-
 def solution(numbers, target):
-    n = len(numbers)
     answer = 0
-    queue = deque(([numbers[0],0], [-numbers[0],0]))
+    n = len(numbers)
+    
+    queue = deque()
+    # queue.append((0,0))
+    queue.append((numbers[0], 1))
+    queue.append((-numbers[0], 1))
     
     while queue:
         tmp, idx = queue.popleft()
-        idx +=1
+        
         if idx == n:
-            if tmp == target:
+            if tmp == target :
                 answer +=1
-        else:
-            queue.append((tmp+numbers[idx], idx))
-            queue.append((tmp-numbers[idx], idx))
                 
+        else:
+            queue.append((tmp+numbers[idx], idx+1))
+            queue.append((tmp-numbers[idx], idx+1))
+            
     return answer
