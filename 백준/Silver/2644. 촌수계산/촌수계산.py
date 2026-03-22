@@ -1,35 +1,31 @@
-import sys
-## 입력 받기
-n = int(sys.stdin.readline())
-a,b = map(int,sys.stdin.readline().split())
-m = int(sys.stdin.readline())
+from collections import deque
+n = int(input())
+a,b = map(int,input().split())
+t = int(input())
+arr = [[] for _ in range(n+1)]
 
-visited = [False] * (n+1)
-# 2차원 배열
-graph = [[] for _ in range(n+1)]
-result = []
+for _ in range(t):
+    u,v = map(int,input().split())
+    arr[u].append(v)
+    arr[v].append(u)
 
-# 배열에 노드의 값들 넣기
-for _ in range(m):
-  x, y = map(int,sys.stdin.readline().split())
-  graph[x].append(y)
-  graph[y].append(x)
+visited = [0] * (n+1)
 
-# DFS 구현
-def dfs(v,cnt):
-  cnt += 1
-  visited[v] = True
-  # 찾아야 하는 사람의 번호를 방문했을 때
-  if v == b:
-    result.append(cnt)
-  for i in graph[v]:
-    if not visited[i]:
-      dfs(i,cnt)
+def bfs(a,b):
+    queue = deque([a])
+    visited[a] = 1
 
-dfs(a,0)
+    while queue:
+        v = queue.popleft()
 
-## 출력
-if len(result) == 0:
-  print(-1)
-else:
-  print(result[0]-1)
+        if v == b:
+            return visited[b] -1
+
+        for w in arr[v]:
+            if not visited[w]:
+                visited[w] = visited[v] + 1 # 현재에서 한 칸 더!  가는 것
+                queue.append(w)
+
+    return -1
+
+print(bfs(a,b))
